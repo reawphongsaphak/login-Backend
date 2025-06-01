@@ -14,14 +14,14 @@ func GetAllCPU () ([]models.CPU, error) {
 	client := database.ConnectDB()
 
 	// Get collection
-	col := client.Database("mydatabase").Collection("CPUs")
+	coll := client.Database("mydatabase").Collection("CPUs")
 
 	// Context with timeout
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
 	// Find all documents
-	cursor, err := col.Find(ctx, bson.M{})
+	cursor, err := coll.Find(ctx, bson.M{})
 	if err != nil {
 		return nil, err
 	}

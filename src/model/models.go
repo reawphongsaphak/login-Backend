@@ -18,3 +18,8 @@ type CPU struct {
 	Brand		string	`json:"brand"`
 	Quantity	int		`json:"quantity"`
 }
+
+type User struct {
+	UserName	string `json:"username" binding:"required"`
+	Password	string `json:"password" binding:"required"`
+}
