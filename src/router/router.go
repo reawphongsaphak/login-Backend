@@ -8,7 +8,6 @@ import (
 func SetupRoutes(r *gin.Engine) {
 	api := r.Group("/api/v1") 
 	{
-		api.GET("/cpus", controller.GetAllCPU)
-		api.POST("/users", controller.AddNewUser)
+		api.POST("/register", controller.RegisterNewUser)
 	}	
 }

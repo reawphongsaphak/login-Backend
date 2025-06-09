@@ -9,7 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func AddNewUser(c *gin.Context) {
+func RegisterNewUser(c *gin.Context) {
 	var newUser models.User
 
 	if err := c.ShouldBindJSON(&newUser); err != nil {
@@ -17,7 +17,7 @@ func AddNewUser(c *gin.Context) {
 		return
 	}
 
-	result, err := service.AddNewUser(newUser)
+	result, err := service.RegisterNewUser(newUser)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return

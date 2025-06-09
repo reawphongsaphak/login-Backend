@@ -7,12 +7,13 @@ import (
 
 	"main/src/database"
 	"main/src/model"
+	"main/src/utils"
 
 	"go.mongodb.org/mongo-driver/v2/bson"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 )
 
-func AddNewUser(user models.User) (*mongo.InsertOneResult, error){
+func RegisterNewUser(user models.User) (*mongo.InsertOneResult, error){
 	client := database.ConnectDB()
 	
 	coll := client.Database("test01").Collection("users")
@@ -27,11 +28,18 @@ func AddNewUser(user models.User) (*mongo.InsertOneResult, error){
 		return nil, existingUser.Err()
 	}
 
+	HashPassword, err := utils.HashPassword(user.Password)
+	if err != nil {
+		return nil, err
+	}
+	HashString := string(HashPassword)
+
 	result, err := coll.InsertOne(
 		ctx,
 		bson.M{
+			"email" : user.Email,
 			"username": user.UserName,
-			"password": user.Password,
+			"password": HashString,
 	})
 
 	return result, err
