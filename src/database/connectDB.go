@@ -7,7 +7,6 @@ import (
 	"sync"
 	"context"
 
-	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
 	"go.mongodb.org/mongo-driver/v2/mongo/readpref"
@@ -18,10 +17,6 @@ var clientOnce sync.Once
 
 func ConnectDB() *mongo.Client {
 	clientOnce.Do(func() {
-		err := godotenv.Load()
-		if err != nil {
-			log.Fatal("Error loading .env file")
-		}
 		uri := os.Getenv("MONGODB_URI")
 		if uri == "" {
 			log.Fatal("You must set your 'MONGODB_URI' environment variable.")
