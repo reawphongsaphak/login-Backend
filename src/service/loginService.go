@@ -15,7 +15,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
-func loginUser(user models.UserLogin) (string, error) {
+func LoginUser(user models.User) (string, error) {
 	client := database.ConnectDB()
 	coll := client.Database("test01").Collection("users")
 
@@ -38,13 +38,15 @@ func loginUser(user models.UserLogin) (string, error) {
 
 	// Generate JWT token
 	claims := jwt.MapClaims{
-		"username": foundUser.UserName,     // include user ID or any unique field
-		"email":   foundUser.Email,
-		"exp":     time.Now().Add(24 * time.Hour).Unix(),
+		"username": foundUser.UserName,
+		"sub":   	foundUser.Email,
+		"exp":     	time.Now().Add(24 * time.Hour).Unix(),
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
 	secret := []byte(os.Getenv("SECRET_KEY")) // Load secret from env variable
+
 	tokenString, err := token.SignedString(secret)
 	if err != nil {
 		return "", fmt.Errorf("failed to generate token: %v", err)
