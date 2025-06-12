@@ -21,9 +21,9 @@ func RegisterNewUser(user models.User) (*mongo.InsertOneResult, error){
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
 
-	existingUser := coll.FindOne(ctx, bson.M{"username": user.UserName})
+	existingUser := coll.FindOne(ctx, bson.M{"email": user.Email})
 	if existingUser.Err() == nil {
-		return nil, fmt.Errorf("user with username '%s' already exists", user.UserName)
+		return nil, fmt.Errorf("this email already register")
 	} else if existingUser.Err() != mongo.ErrNoDocuments {
 		return nil, existingUser.Err()
 	}
